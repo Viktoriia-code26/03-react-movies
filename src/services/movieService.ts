@@ -6,8 +6,9 @@ interface MovieHttpResponse {
 }
 
 const token = import.meta.env.VITE_TMDB_TOKEN;
-export async function fetchMovie(query: string = "Inception"): Promise<Movie[]> {
-  
+export async function fetchMovie(
+  query: string = "Inception"
+): Promise<Movie[]> {
   const url = `https://api.themoviedb.org/3/search/movie`;
 
   const response = await axios.get<MovieHttpResponse>(url, {
@@ -19,7 +20,7 @@ export async function fetchMovie(query: string = "Inception"): Promise<Movie[]> 
     },
     headers: {
       Authorization: `Bearer ${token}`,
-      accept: 'application/json',
+      accept: "application/json",
     },
   });
 

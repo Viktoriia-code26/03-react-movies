@@ -13,10 +13,11 @@ export default function App() {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [isLoading, setLoading] = useState(false);
   const [isError, setIsError] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
 
-  const closeModal = () => setIsModalOpen(false);
+  const closeModal = () => {
+    setSelectedMovie(null); // очищаем выбранный фильм = закрываем модалку
+  };
 
   const handleSearch = async (query: string) => {
     if (!query.trim()) {
@@ -47,11 +48,11 @@ export default function App() {
 
   return (
     <div className={css.app}>
-      {isModalOpen && selectedMovie && (
+      {selectedMovie && (
         <MovieModal movie={selectedMovie} onClose={closeModal} />
       )}
 
-      <SearchBar onSubmit={handleSearch} />
+      <SearchBar action={handleSearch} />
 
       {isLoading && <Loader />}
       {isError && <ErrorMessage />}
@@ -59,10 +60,7 @@ export default function App() {
       {movies.length > 0 && (
         <MovieGrid
           movies={movies}
-          onSelectMovie={(movie) => {
-            setSelectedMovie(movie);
-            setIsModalOpen(true);
-          }}
+          onSelect={(movie) => setSelectedMovie(movie)} // только один стейт
         />
       )}
 
